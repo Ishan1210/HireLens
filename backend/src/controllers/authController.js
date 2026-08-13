@@ -4,6 +4,7 @@ const db = require('../config/db');
 const env = require('../config/env');
 
 const SALT_ROUNDS = 10; // cost factor for bcrypt - higher = slower but more resistant to brute force
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function generateToken(user) {
   // We only put non-sensitive, minimal data in the token payload.
@@ -23,12 +24,20 @@ async function signup(req, res, next) {
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Name, email, and password are all required.' });
     }
+    if (!EMAIL_REGEX.test(email)) {
+      return res.status(400).json({ error: 'Please provide a valid email address.' });
+    }
     if (password.length < 6) {
       return res.status(400).json({ error: 'Password must be at least 6 characters.' });
     }
 
+    // Normalize email casing - without this, "Test@x.com" and "test@x.com"
+    // would be treated as different accounts despite being the same address
+    // to any real mail server, and could bypass the duplicate-email check below.
+    const normalizedEmail = email.trim().toLowerCase();
+
     // Check for an existing account with this email before doing any hashing work
-    const existing = await db.query('SELECT id FROM users WHERE email = $1', [email]);
+    const existing = await db.query('SELECT id FROM users WHERE email = $1', [normalizedEmail]);
     if (existing.rows.length > 0) {
       return res.status(409).json({ error: 'An account with this email already exists.' });
     }
@@ -41,7 +50,7 @@ async function signup(req, res, next) {
       `INSERT INTO users (name, email, password_hash)
        VALUES ($1, $2, $3)
        RETURNING id, name, email, created_at`,
-      [name, email, passwordHash]
+      [name.trim(), normalizedEmail, passwordHash]
     );
 
     const user = result.rows[0];
@@ -61,9 +70,11 @@ async function login(req, res, next) {
       return res.status(400).json({ error: 'Email and password are required.' });
     }
 
+    const normalizedEmail = email.trim().toLowerCase();
+
     const result = await db.query(
       'SELECT id, name, email, password_hash FROM users WHERE email = $1',
-      [email]
+      [normalizedEmail]
     );
 
     // Deliberately vague error message (not "email not found" vs "wrong password")

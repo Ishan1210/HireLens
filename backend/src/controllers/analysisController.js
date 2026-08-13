@@ -72,6 +72,13 @@ async function getAnalysisById(req, res, next) {
   try {
     const { id } = req.params;
 
+    // Without this check, a non-numeric id (e.g. /api/analyses/abc) would
+    // reach Postgres and throw a raw type-conversion error, surfacing as an
+    // unhelpful 500. Catching it here gives a clean 400 instead.
+    if (!/^\d+$/.test(id)) {
+      return res.status(400).json({ error: 'Invalid analysis id.' });
+    }
+
     const result = await db.query(
       `SELECT id, resume_filename, job_description, match_score, strengths, gaps, suggestions, created_at
        FROM analyses
