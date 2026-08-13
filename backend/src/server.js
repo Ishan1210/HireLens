@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const env = require('./config/env');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -17,6 +18,9 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+
+// Auth routes
+app.use('/api/auth', authRoutes);
 
 // Fallback 404 handler
 app.use((req, res) => {
