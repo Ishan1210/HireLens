@@ -8,6 +8,7 @@ import Signup from './pages/Signup';
 import Analyze from './pages/Analyze';
 import History from './pages/History';
 import AnalysisDetail from './pages/AnalysisDetail';
+import NotFound from './pages/NotFound';
 
 export default function App() {
   return (
@@ -42,6 +43,7 @@ export default function App() {
               </ProtectedRoute>
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </AuthProvider>
     </BrowserRouter>
