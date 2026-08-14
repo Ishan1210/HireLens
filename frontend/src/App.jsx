@@ -7,6 +7,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Analyze from './pages/Analyze';
 import History from './pages/History';
+import AnalysisDetail from './pages/AnalysisDetail';
 
 export default function App() {
   return (
@@ -30,6 +31,14 @@ export default function App() {
             element={
               <ProtectedRoute>
                 <History />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/history/:id"
+            element={
+              <ProtectedRoute>
+                <AnalysisDetail />
               </ProtectedRoute>
             }
           />
