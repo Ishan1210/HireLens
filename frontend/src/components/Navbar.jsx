@@ -82,17 +82,25 @@ export default function Navbar() {
   return (
     <header className="border-b border-ink-700 bg-ink-950/80 backdrop-blur-sm sticky top-0 z-20">
       {/* Full-width bar (no max-w constraint) with generous side padding so
-          nav content sits at the left edge and the logo sits at the right
+          the logo sits at the left edge and nav content sits at the right
           edge - content anchored to the screen's corners rather than
           centered in a constrained column. Taller py than before (5 vs 4)
           for a more substantial bar at any screen size. */}
       <div className="flex w-full items-center justify-between px-6 py-5 sm:px-10">
-        {/* Nav content - left corner */}
+        {/* Logo - left corner */}
+        <Link to="/" className="flex items-center gap-3 shrink-0">
+          <ApertureMark />
+          <span className="font-display text-xl font-semibold tracking-tight text-paper-100">
+            HireLens
+          </span>
+        </Link>
+
+        {/* Nav content - right corner */}
         <nav className="hidden sm:flex items-center gap-7">
           {isAuthenticated ? authedLinks : guestLinks}
         </nav>
 
-        {/* Hamburger toggle - left corner on mobile, since nav is hidden there */}
+        {/* Hamburger toggle - right corner on mobile, since nav is hidden there */}
         <button
           onClick={() => setMenuOpen((v) => !v)}
           className="sm:hidden flex items-center justify-center text-paper-300 hover:text-scan-400"
@@ -101,14 +109,6 @@ export default function Navbar() {
         >
           <MenuIcon open={menuOpen} />
         </button>
-
-        {/* Logo - right corner */}
-        <Link to="/" className="flex items-center gap-3 shrink-0">
-          <span className="font-display text-xl font-semibold tracking-tight text-paper-100">
-            HireLens
-          </span>
-          <ApertureMark />
-        </Link>
       </div>
 
       {/* Mobile dropdown panel */}
