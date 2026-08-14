@@ -1,0 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Ink navy background system - the "instrument panel" the lens sits on */
+  --color-ink-950: #0a0e17;
+  --color-ink-900: #0e1420;
+  --color-ink-800: #151d2e;
+  --color-ink-700: #1e2a40;
+  --color-ink-600: #2c3b56;
+
+  /* Paper - text and light surfaces */
+  --color-paper-100: #f6f5f1;
+  --color-paper-300: #d8d9dd;
+  --color-paper-500: #8b93a3;
+
+  /* Cyan - "scanning / active / positive match" accent */
+  --color-scan-400: #4cc9c0;
+  --color-scan-500: #33b3aa;
+  --color-scan-600: #1f958c;
+
+  /* Amber - "attention / gap / needs work" accent */
+  --color-flag-400: #f2b84b;
+  --color-flag-500: #dba032;
+
+  --font-display: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+}
+
+body {
+  background-color: var(--color-ink-950);
+  color: var(--color-paper-100);
+  font-family: var(--font-body);
+}
+
+/* Visible keyboard focus - accessibility floor per design guidelines */
+:focus-visible {
+  outline: 2px solid var(--color-scan-400);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
