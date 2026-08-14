@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 
 function ApertureMark() {
   return (
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none" aria-hidden="true">
+    <svg width="32" height="32" viewBox="0 0 28 28" fill="none" aria-hidden="true">
       <circle cx="14" cy="14" r="12" stroke="var(--color-scan-400)" strokeWidth="1.5" opacity="0.4" />
       <circle cx="14" cy="14" r="8" stroke="var(--color-scan-400)" strokeWidth="1.5" />
       <circle cx="14" cy="14" r="2.5" fill="var(--color-scan-400)" />
@@ -16,7 +16,7 @@ function MenuIcon({ open }) {
   // Simple animated hamburger -> X, avoids pulling in an icon library for
   // a single glyph. Two lines rotate into an X when open.
   return (
-    <svg width="22" height="22" viewBox="0 0 22 22" fill="none" aria-hidden="true">
+    <svg width="24" height="24" viewBox="0 0 22 22" fill="none" aria-hidden="true">
       <line
         x1="3" y1={open ? 11 : 6} x2="19" y2={open ? 11 : 6}
         stroke="currentColor" strokeWidth="1.5" strokeLinecap="round"
@@ -81,20 +81,18 @@ export default function Navbar() {
 
   return (
     <header className="border-b border-ink-700 bg-ink-950/80 backdrop-blur-sm sticky top-0 z-20">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-        <Link to="/" className="flex items-center gap-2.5 shrink-0">
-          <ApertureMark />
-          <span className="font-display text-lg font-semibold tracking-tight text-paper-100">
-            HireLens
-          </span>
-        </Link>
-
-        {/* Full nav - hidden below sm, since that's where items start crowding the logo */}
-        <nav className="hidden sm:flex items-center gap-6">
+      {/* Full-width bar (no max-w constraint) with generous side padding so
+          nav content sits at the left edge and the logo sits at the right
+          edge - content anchored to the screen's corners rather than
+          centered in a constrained column. Taller py than before (5 vs 4)
+          for a more substantial bar at any screen size. */}
+      <div className="flex w-full items-center justify-between px-6 py-5 sm:px-10">
+        {/* Nav content - left corner */}
+        <nav className="hidden sm:flex items-center gap-7">
           {isAuthenticated ? authedLinks : guestLinks}
         </nav>
 
-        {/* Hamburger toggle - only visible below sm */}
+        {/* Hamburger toggle - left corner on mobile, since nav is hidden there */}
         <button
           onClick={() => setMenuOpen((v) => !v)}
           className="sm:hidden flex items-center justify-center text-paper-300 hover:text-scan-400"
@@ -103,6 +101,14 @@ export default function Navbar() {
         >
           <MenuIcon open={menuOpen} />
         </button>
+
+        {/* Logo - right corner */}
+        <Link to="/" className="flex items-center gap-3 shrink-0">
+          <span className="font-display text-xl font-semibold tracking-tight text-paper-100">
+            HireLens
+          </span>
+          <ApertureMark />
+        </Link>
       </div>
 
       {/* Mobile dropdown panel */}

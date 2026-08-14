@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../api/client';
+import Skeleton from '../components/Skeleton';
 
 // Small mono-styled score badge for the list view - lighter weight than the
 // full ScoreRing used on the analyze/detail pages, since a dense list of
@@ -46,8 +47,20 @@ export default function History() {
 
   if (isLoading) {
     return (
-      <main className="mx-auto max-w-2xl px-6 py-16 text-center">
-        <p className="font-mono text-sm text-paper-500">Loading history...</p>
+      <main className="mx-auto max-w-2xl px-6 py-16">
+        <Skeleton className="h-8 w-32 rounded-md" />
+        <Skeleton className="mt-2 h-4 w-24 rounded-md" />
+        <div className="mt-8 flex flex-col gap-3">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex items-center justify-between rounded-lg border border-ink-700 bg-ink-900 px-5 py-4">
+              <div className="flex flex-col gap-2">
+                <Skeleton className="h-4 w-40 rounded-md" />
+                <Skeleton className="h-3 w-20 rounded-md" />
+              </div>
+              <Skeleton className="h-6 w-10 rounded-full" />
+            </div>
+          ))}
+        </div>
       </main>
     );
   }

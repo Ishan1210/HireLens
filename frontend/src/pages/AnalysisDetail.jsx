@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import api from '../api/client';
 import ScoreRing from '../components/ScoreRing';
 import ResultListCard from '../components/ResultListCard';
+import Skeleton from '../components/Skeleton';
 
 export default function AnalysisDetail() {
   const { id } = useParams();
@@ -31,8 +32,24 @@ export default function AnalysisDetail() {
 
   if (isLoading) {
     return (
-      <main className="mx-auto max-w-3xl px-6 py-16 text-center">
-        <p className="font-mono text-sm text-paper-500">Loading analysis...</p>
+      <main className="mx-auto max-w-3xl px-6 py-16">
+        <Skeleton className="h-4 w-24 rounded-md" />
+        <div className="mt-6 flex flex-col items-center">
+          <Skeleton className="h-4 w-32 rounded-md" />
+          <Skeleton className="mt-6 h-[140px] w-[140px] rounded-full" />
+          <Skeleton className="mt-4 h-3 w-40 rounded-md" />
+        </div>
+        <div className="mt-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="rounded-lg border border-ink-700 bg-ink-900 p-5">
+              <Skeleton className="h-3 w-16 rounded-md" />
+              <div className="mt-3 flex flex-col gap-2.5">
+                <Skeleton className="h-3 w-full rounded-md" />
+                <Skeleton className="h-3 w-3/4 rounded-md" />
+              </div>
+            </div>
+          ))}
+        </div>
       </main>
     );
   }
